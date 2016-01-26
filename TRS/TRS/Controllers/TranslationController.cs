@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using TRS.Models;
 using TRS.Repository;
@@ -11,6 +10,7 @@ using TRS.Service;
 
 namespace TRS.Controllers
 {
+    
     public class TranslationController : ApiController
     {
         private readonly TranslationService _translations = null;
@@ -21,9 +21,10 @@ namespace TRS.Controllers
         }
 
         // GET: Translation
+        
         public IEnumerable<Translation> Get()
         {
-            return null;
+            return _translations.GetTopToTranslate(100);
         }
     }
 }
