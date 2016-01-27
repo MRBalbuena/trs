@@ -9,7 +9,7 @@ using TRS.Models;
 
 namespace TRS.Repository
 {
-    public class TransRepository: TransDataContext
+    public class TransRepository: Repository<Translation>
     {
         private readonly TransDataContext _context = null;
         public TransRepository()

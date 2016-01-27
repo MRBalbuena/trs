@@ -6,7 +6,7 @@ using TRS.Models;
 
 namespace TRS.Repository
 {
-    public class TranslationIni : System.Data.Entity.DropCreateDatabaseIfModelChanges<TransDataContext>
+    public class TranslationIni : System.Data.Entity.DropCreateDatabaseAlways<TransDataContext>
     {
         protected override void Seed(TransDataContext context)
         {

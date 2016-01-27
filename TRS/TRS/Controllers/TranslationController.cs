@@ -26,5 +26,10 @@ namespace TRS.Controllers
         {
             return _translations.GetTopToTranslate(100);
         }
+
+        public string Get(int id)
+        {
+            return "id: " + id.ToString();
+        }
     }
 }
