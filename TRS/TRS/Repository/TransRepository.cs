@@ -16,22 +16,5 @@ namespace TRS.Repository
         {
             _context = new TransDataContext();
         }
-
-        public Translation Get(int id)
-        {
-            return _context.Translations.Find(id);
-        }
-
-        public IEnumerable<Translation> GetAll()
-        {
-            return _context.Translations;
-        }
-
-        public bool Update(Translation translation)
-        {
-            _context.Translations.AddOrUpdate(translation);
-            _context.SaveChanges();
-            return true;
-        }
    }
 }

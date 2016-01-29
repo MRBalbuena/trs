@@ -24,9 +24,9 @@ namespace TRS.Repository
             this.context = context;
         }
 
-        public List<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return DbSet.ToList();
+            return DbSet;
         }
 
         public T Get(int id)
