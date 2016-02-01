@@ -17,7 +17,7 @@ namespace TRS.Service
 
         public IEnumerable<Translation> GetTopToTranslate(int top)
         {
-            return _repo.GetAll().Take(100).Where(t => t.Spanish == string.Empty);
+            return _repo.GetAll().ToList();
         }
     }
 }

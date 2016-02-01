@@ -1,10 +1,26 @@
 ﻿<!DOCTYPE html>
 <html>
+<script src="Scripts/knockout-3.4.0.js"></script>
+<script src="Scripts/jquery-1.10.2.js"></script>
+<script src="Scripts/trsApp.js"></script>
 <head>
     <title></title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8"/>
 </head>
 <body>
 Hello
+<div>
+
+    <table >
+        <tbody>
+            <!-- ko foreach: trs -->
+            <tr>
+                <td><span data-bind="text: Text"></span></td>
+                <td><input type="checkbox" data-bind="checked: $root.selected"/></td>
+            </tr>
+            <!-- /ko -->
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

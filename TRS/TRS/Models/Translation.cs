@@ -19,12 +19,12 @@ namespace TRS.Models
         public string Text { get; set; }
         public string Spanish { get; set; }
         public string BlockedBy { get; set; }
-        public TimeSpan BlockedTime { get; set; }
+        public TimeSpan? BlockedTime { get; set; }
         public string TransBy { get; set; }
-        public DateTime TransDate { get; set; }
+        public DateTime? TransDate { get; set; }
         public string CheckedBy { get; set; }
-        public DateTime CheckedTime { get; set; }
+        public DateTime? CheckedTime { get; set; }
         public string RejectedBy { get; set; }
-        public DateTime RejectedTime { get; set; }
+        public DateTime? RejectedTime { get; set; }
     }
 }
