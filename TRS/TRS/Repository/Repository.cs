@@ -25,8 +25,8 @@ namespace TRS.Repository
         }
 
         public IEnumerable<T> GetAll()
-        {
-            return DbSet;
+        { 
+            return DbSet.ToList();
         }
 
         public T Get(int id)
