@@ -16,7 +16,7 @@ Hello
             <!-- ko foreach: trs -->
             <tr>
                 <td><span data-bind="text: Text"></span></td>
-                <td><input type="checkbox" data-bind="checked: $root.selected"/></td>
+                <td><input type="radio" data-bind=" click: $root.selectedItem, checked: $data.selected" name="trs"/></td>
             </tr>
             <!-- /ko -->
         </tbody>
