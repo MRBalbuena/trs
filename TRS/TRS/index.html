@@ -1,22 +1,26 @@
 ﻿<!DOCTYPE html>
 <html>
-<script src="Scripts/knockout-3.4.0.js"></script>
-<script src="Scripts/jquery-1.10.2.js"></script>
-<script src="Scripts/trsApp.js"></script>
 <head>
     <title></title>
     <meta charset="utf-8"/>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+
+    <script src="Scripts/knockout-3.4.0.js"></script>
+    <script src="Scripts/jquery-1.10.2.js"></script>    
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/trsApp.js"></script>
 </head>
 <body>
 Hello
-<div>
+<div class="container">
 
-    <table >
+    <table class="table table-condensed">
         <tbody>
             <!-- ko foreach: trs -->
             <tr>
-                <td><span data-bind="text: Text"></span></td>
-                <td><input type="radio" data-bind=" click: $root.selectedItem, checked: $data.selected" name="trs"/></td>
+                <td data-bind="click: $root.setActive(TransId), attr: { class: $root.getClass() } " style="cursor: pointer;">
+                    <span data-bind="text: Text"></span>
+                </td>                
             </tr>
             <!-- /ko -->
         </tbody>

@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="Scripts/knockout-3.4.0.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/test.js"></script>
+</head>
+<body>
+
+    <div style="color:Red; margin:0 0 10px 0;">I want [No Click!] to not fire the select event.  And I also don't want to have to put the click binding in each of the td's that I want it to work with.</div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: model.Things">
+            <tr style="cursor:pointer;" data-bind="click: $root.selectThing ">
+                <td data-bind="text: ID"></td>
+                <td data-bind="text: Name"></td>
+                <td>[Click Should Work]</td>
+                <td data-bind="click: $root.doSomething, clickBubble: false">[No Click!]</td>
+            </tr>
+        </tbody>
+    </table>
+<div style="margin: 15px 0 0 0;">
+    Selected Row ID: <span data-bind="text: $root.model.CurrentDisplayThing().ID"></span>
+</div>
+
+</body>
+</html>
