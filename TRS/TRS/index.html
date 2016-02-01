@@ -2,29 +2,40 @@
 <html>
 <head>
     <title></title>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <link href="Content/bootstrap.css" rel="stylesheet" />
 
     <script src="Scripts/knockout-3.4.0.js"></script>
-    <script src="Scripts/jquery-1.10.2.js"></script>    
+    <script src="Scripts/jquery-1.10.2.js"></script>
     <script src="Scripts/bootstrap.js"></script>
     <script src="Scripts/trsApp.js"></script>
 </head>
 <body>
-Hello
-<div class="container">
+    Hello
+    <div class="container">
 
-    <table class="table table-condensed">
-        <tbody>
-            <!-- ko foreach: trs -->
-            <tr>
-                <td data-bind="click: $root.setActive(TransId), attr: { class: $root.getClass() } " style="cursor: pointer;">
-                    <span data-bind="text: Text"></span>
-                </td>                
-            </tr>
-            <!-- /ko -->
-        </tbody>
-    </table>
-</div>
+        <table class="table table-condensed">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span data-bind="text: selected.Text"></span>
+                            <label for="spanish" data-bind="text: selected.Text"></label>
+                            <input id="spanish" type="text" class="form-control" data-bind="value: selected.Spanish"/>
+                        </div>
+                    </td>
+                </tr>
+                <!-- ko foreach: trs -->
+                <tr>
+                    <td data-bind="attr: { class: $root.getClass() } " style="cursor: pointer; width: 100%">
+                        <div class="trs-container" style="width: 100%">
+                            <span data-bind="text: Text"></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- /ko -->
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

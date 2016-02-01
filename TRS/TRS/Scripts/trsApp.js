@@ -8,12 +8,11 @@ $(function () {
     {        
             trs: ko.observableArray(),
             selected: ko.observable(),
-            setActive: function(item) {
-                if (!item) return;
-                console.log('setActive');
-            },
             getClass: ko.computed(function(x) {
-                return 'active';
+                if (!viewModel) return '';
+                var context = ko.contextFor(this);
+                if (context === viewModel.selected.TransId) return 'active';
+                return '';
             })
     };
 
@@ -23,10 +22,16 @@ $(function () {
         console.log(data);
         viewModel.trs(data);
         viewModel.trs().forEach(t => t.selected = 'false');
-        
+        $(".trs-container").on('click', function () {            
+            var context = ko.contextFor(this);
+            viewModel.selected = context.$data;
+            console.log(viewModel.selected);
+        });
     });
 
     ko.applyBindings(viewModel);
+
+
     return viewModel;
 });
 
