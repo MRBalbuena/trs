@@ -2,6 +2,21 @@
 /// <reference path="jquery-1.10.2.js" />
 /// <reference path="knockout-3.4.0.js" />
 
+var userViewModel = function () {
+    var self = this;
+    self.user = ko.observable('');
+    self.pwd = ko.observable('');
+    self.validate = function () {
+        return $.post('api/translation/validate', { name: self.user, pwd: self.pwd }, function (result) {
+            self.isValid(true);
+        })        
+    }
+    self.isValid = ko.observable(false);
+};
+
+
+
+
 var ViewModel = function () {
     var self = this;
     self.get = function () {
@@ -24,15 +39,16 @@ var ViewModel = function () {
         // TODO: MRB check input length and set error message if invalid.
         self.selected().Spanish = self.selectedText();
         console.log(self.selected);
-        $.postJson('api/translation', self.selected()).done(function() {
+        $.post('api/translation', self.selected()).done(function() {
             self.selectedText("");
             // Remove selected from array
             self.trs($.grep(self.trs(), function (o) { return o.TransId !== self.selected().TransId }));
             // Get max ID from the array
             // Get value top 1 next id            
             // add new translation to array
-            var selectedId = self.trs.find(function(t) {
-                return t.TransId === self.selected().TransId;
+            var id = self.trs()[self.trs().length - 1].TransId;
+            $.getJSON('api/translation/' + id, function (result) {
+                self.trs.push(result);                
             })
         }).fail(function(data) {
             
@@ -49,6 +65,7 @@ var ViewModel = function () {
 
 $(function () {
     var vm = new ViewModel();
-    ko.applyBindings(vm);
+    ko.applyBindings(vm, document.getElementById('trs'));
+    ko.applyBindings(userViewModel, document.getElementById('login'));
     vm.get();
 });

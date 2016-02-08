@@ -27,14 +27,27 @@ namespace TRS.Controllers
             return _translations.GetTopToTranslate(100);
         }
 
-        public string Get(int id)
+        public Translation Get(int id)
         {
-            return "id: " + id.ToString();
+            return new Translation
+            {
+                TransId = id,
+                Text = "This is a new phrase to translate",
+                TransKey = "NEW_TEXT_TO_TRANSLATE",
+                Spanish = ""
+            };
         }
 
         public void Post(Translation translation)
         {
             _translations.Save(translation);
+        }
+
+        [HttpPost] 
+        [Route("api/translation/validate")]      
+        public bool Validate(User user)
+        {
+            return true;
         }
     }
 }
