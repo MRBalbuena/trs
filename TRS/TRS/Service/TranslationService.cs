@@ -19,5 +19,12 @@ namespace TRS.Service
         {
             return _repo.GetAll().ToList();
         }
+
+        public void Save(Translation translation)
+        {
+            //TODO: MRB uncomment when db is set
+            //_repo.Update(translation);
+            //_repo.SaveChanges();
+        }
     }
 }

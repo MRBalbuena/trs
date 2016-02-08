@@ -31,5 +31,10 @@ namespace TRS.Controllers
         {
             return "id: " + id.ToString();
         }
+
+        public void Post(Translation translation)
+        {
+            _translations.Save(translation);
+        }
     }
 }

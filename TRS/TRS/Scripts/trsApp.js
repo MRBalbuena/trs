@@ -1,17 +1,11 @@
 ﻿/// <reference path="knockout-3.4.0.debug.js" />
 /// <reference path="jquery-1.10.2.js" />
 /// <reference path="knockout-3.4.0.js" />
-/// <reference path="jquery-1.10.2.js" />
 
 var ViewModel = function () {
     var self = this;
     self.get = function () {
-        return $.getJSON('api/translation', function (result) {
-            //console.log(result);
-            result.forEach(function(t) {
-                t.selected = 'false';
-                t.itemClass = '';
-            });
+        return $.getJSON('api/translation', function (result) {            
             self.trs(result);
         });
     };
@@ -30,8 +24,18 @@ var ViewModel = function () {
         // TODO: MRB check input length and set error message if invalid.
         self.selected().Spanish = self.selectedText();
         console.log(self.selected);
-        $.postJson('api/translation', self.selected(), function() {
-
+        $.postJson('api/translation', self.selected()).done(function() {
+            self.selectedText("");
+            // Remove selected from array
+            self.trs($.grep(self.trs(), function (o) { return o.TransId !== self.selected().TransId }));
+            // Get max ID from the array
+            // Get value top 1 next id            
+            // add new translation to array
+            var selectedId = self.trs.find(function(t) {
+                return t.TransId === self.selected().TransId;
+            })
+        }).fail(function(data) {
+            
         });
         $("#save").removeClass("btn-default");
         $("#save").addClass("btn-success");
