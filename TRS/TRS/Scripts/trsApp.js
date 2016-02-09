@@ -32,11 +32,13 @@ var ViewModel = function () {
     self.trsClick = function (item) {
         self.selected(item);
         self.selectedText(item.Text);
-        $.post('api/translation/block', { id: item.TransId, user: self.user() }).done(function() {
+        $.post('api/block', item.TransId +',' + self.user()).done(function (result) {
+            var rowStyle = result ? "danger" : "active";
+            var btnStyle = result ? "disabled" : "btn-default";
             $("table td").removeClass();
-            $("table td[id=" + item.TransId + "]").toggleClass("active");
-            $("#save").removeClass("btn-success");
-            $("#save").addClass("btn-default");
+            $("table td[id=" + item.TransId + "]").toggleClass(rowStyle);
+            $("#save").removeClass("btn-success").removeClass("disabled");
+            $("#save").addClass(btnStyle);
         });
     };
     self.save = function () {

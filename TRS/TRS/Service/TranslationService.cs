@@ -20,6 +20,11 @@ namespace TRS.Service
             return _repo.GetAll().ToList();
         }
 
+        public Translation GetPhrase(int id)
+        {
+            return _repo.Get(id);
+        }
+
         public string BlockPhrase(int id, string user)
         {
             var phrase = _repo.Get(id);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -29,19 +30,17 @@ namespace TRS.Controllers
 
         public Translation Get(int id)
         {
-            return new Translation
-            {
-                TransId = id,
-                Text = "This is a new phrase to translate",
-                TransKey = "NEW_TEXT_TO_TRANSLATE",
-                Spanish = ""
-            };
+            return _translations.GetPhrase(id);
         }
 
         [HttpPost]
-        [Route("api/translation/block")]
-        public string Block(int id, string user)
+        [Route("api/block")]
+        public string block([FromBody] string data)
         {
+            if (string.IsNullOrEmpty(data)) return "no data available";
+            //return "ok";
+            int id = Convert.ToInt32( data.Split((",").ToCharArray())[0]);
+            string user = data.Split((",").ToCharArray())[1];
             return _translations.BlockPhrase(id, user);
         }
 
