@@ -38,9 +38,28 @@ namespace TRS.Controllers
             };
         }
 
+        [HttpPost]
+        [Route("api/translation/block")]
+        public string Block(int id, string user)
+        {
+            return _translations.BlockPhrase(id, user);
+        }
+
         public void Post(Translation translation)
         {
             _translations.Save(translation);
+        }
+
+        [Route("api/users")]
+        public IEnumerable<User> GetUsers()
+        {
+            var users = new List<User> {                 
+                new User { Name="Gabriela", Pwd = "GNG"},
+                new User { Name="Micaela", Pwd = "MBG"},
+                new User { Name="Valentina", Pwd = "VBG"},
+                new User { Name="Marcelo", Pwd = "MRB"}
+                };
+            return users;
         }
 
         [HttpPost] 

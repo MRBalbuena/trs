@@ -20,6 +20,17 @@ namespace TRS.Service
             return _repo.GetAll().ToList();
         }
 
+        public string BlockPhrase(int id, string user)
+        {
+            var phrase = _repo.Get(id);
+            if (!string.IsNullOrEmpty(phrase.BlockedBy)) return phrase.BlockedBy;
+            phrase.BlockedBy = user;
+            phrase.BlockedTime = TimeSpan.FromTicks(DateTime.Now.Ticks);
+            _repo.Update(phrase);
+            _repo.SaveChanges();
+            return "";
+        }
+
         public void Save(Translation translation)
         {
             //TODO: MRB uncomment when db is set

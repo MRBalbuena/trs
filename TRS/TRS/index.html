@@ -11,19 +11,19 @@
     <script src="Scripts/trsApp.js"></script>
 </head>
 <body>    
-    <!-- ko: if: !isValid -->
+    <!-- ko if: !userIsValid() -->
     <div class="container" id="login">
         <div class="row">
             <div class="col-md-offset-5 col-md-3">
                 <div class="form-login">
                     <h4>Welcome back.</h4>
-                    <input type="text" data-bind="text: user" id="userName" class="form-control input-sm chat-input" placeholder="username" />
-                    </br>
-                    <input type="text" data-bind="text: pwd" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
-                    </br>
+                    <input type="text" data-bind="value: user" id="userName" class="form-control input-sm chat-input" placeholder="username" />
+                    <br>
+                    <input type="text" data-bind="value: pwd" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
+                    <br>
                     <div class="wrapper">
                         <span class="group-btn">
-                            <a href="#" data-bind="click: validate" class="btn btn-primary btn-md">login <i class="fa fa-sign-in"></i></a>
+                            <a href="#" data-bind="click: validateUser" class="btn btn-primary btn-md">login <i class="fa fa-sign-in"></i></a>
                         </span>
                     </div>
                 </div>
@@ -31,15 +31,16 @@
             </div>
         </div>
     </div>
-    <!-- / ko-->
+    <!-- /ko -->
+    <!-- ko if: userIsValid-->
     <div class="container" id="trs">
         <table class="table table-condensed">
             <tbody>
                 <tr>
                     <td>
-                        <div class="form-group">                            
-                            <label for="spanish" data-bind="text: selectedText"></label>
-                            <input id="spanish" type="text" class="form-control" data-bind="value: selectedText"/>
+                        <div class="form-group">
+                            <span>Translate: </span><label for="spanish" data-bind="text: selectedText"></label>
+                            <input id="spanish" type="text" class="form-control" data-bind="value: translation" />
                             <button type="button" id="save" data-bind="click: save" class="btn btn-default btn-block">Save</button>
                         </div>
                     </td>
@@ -56,5 +57,6 @@
             </tbody>
         </table>
     </div>
+    <!-- /ko -->
 </body>
 </html>
