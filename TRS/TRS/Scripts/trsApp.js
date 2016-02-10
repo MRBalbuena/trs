@@ -32,7 +32,7 @@ var ViewModel = function () {
     self.trsClick = function (item) {
         self.selected(item);
         self.selectedText(item.Text);
-        $.post('api/block', item.TransId +',' + self.user()).done(function (result) {
+        $.post('api/block', "=" + item.TransId +"," + self.user()).done(function (result) {
             var rowStyle = result ? "danger" : "active";
             var btnStyle = result ? "disabled" : "btn-default";
             $("table td").removeClass();
@@ -44,7 +44,7 @@ var ViewModel = function () {
     self.save = function () {
         // TODO: MRB check input length and set error message if invalid.
         self.selected().Spanish = self.translation();
-        self.selected().user = self.user();
+        self.selected().TransBy = self.user();
         console.log(self.selected());
         $.post('api/translation', self.selected()).done(function () {
             self.selectedText("");

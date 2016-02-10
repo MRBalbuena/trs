@@ -19,7 +19,7 @@ namespace TRS.Models
         public string Text { get; set; }
         public string Spanish { get; set; }
         public string BlockedBy { get; set; }
-        public TimeSpan? BlockedTime { get; set; }
+        public DateTime? BlockedTime { get; set; }
         public string TransBy { get; set; }
         public DateTime? TransDate { get; set; }
         public string CheckedBy { get; set; }

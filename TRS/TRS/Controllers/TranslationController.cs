@@ -46,7 +46,7 @@ namespace TRS.Controllers
 
         public void Post(Translation translation)
         {
-            _translations.Save(translation);
+            _translations.SaveTranslation(translation);
         }
 
         [Route("api/users")]

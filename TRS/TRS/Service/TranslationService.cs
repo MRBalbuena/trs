@@ -17,7 +17,7 @@ namespace TRS.Service
 
         public IEnumerable<Translation> GetTopToTranslate(int top)
         {
-            return _repo.GetAll().ToList();
+            return _repo.GetAll().Where(t => t.Spanish == null).OrderBy(t => t.TransId).ToList();
         }
 
         public Translation GetPhrase(int id)
@@ -30,17 +30,25 @@ namespace TRS.Service
             var phrase = _repo.Get(id);
             if (!string.IsNullOrEmpty(phrase.BlockedBy)) return phrase.BlockedBy;
             phrase.BlockedBy = user;
-            phrase.BlockedTime = TimeSpan.FromTicks(DateTime.Now.Ticks);
+            phrase.BlockedTime = DateTime.Now;
             _repo.Update(phrase);
             _repo.SaveChanges();
             return "";
         }
 
-        public void Save(Translation translation)
+        public void SaveTranslation(Translation translation)
         {
-            //TODO: MRB uncomment when db is set
-            //_repo.Update(translation);
-            //_repo.SaveChanges();
+            var phrase = _repo.Get(translation.TransId);
+            if(phrase != null)
+            {
+                phrase.Spanish = translation.Spanish;
+                phrase.TransBy = translation.TransBy;
+                phrase.TransDate = DateTime.Now;
+                phrase.BlockedBy = null;
+                phrase.BlockedTime = null;
+            }
+            _repo.Update(phrase);
+            _repo.SaveChanges();
         }
     }
 }
