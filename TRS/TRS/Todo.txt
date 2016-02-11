@@ -1,0 +1,6 @@
+﻿11/02/2016
+20161102 - OK - Compare user names in lower
+20161102 - OK - Display message who blocked phrase
+- - Cancel save when button is disabled
+- - Disable button when translation is empty
+- - Unblock any phrase blocked for more than 10 minutes

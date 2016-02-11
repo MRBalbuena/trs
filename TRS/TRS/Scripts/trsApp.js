@@ -2,6 +2,9 @@
 /// <reference path="jquery-1.10.2.js" />
 /// <reference path="knockout-3.4.0.js" />
 
+var STATE_BLOCKED_BY = 'Phrase bloked by: ';
+var STATE_NO_MESSAGE = '';
+
 var ViewModel = function () {
     var self = this;
     self.users = ko.observableArray([]);
@@ -14,7 +17,7 @@ var ViewModel = function () {
     };
     self.validateUser = function () {
         var user = self.users().find(function (u) {
-            return u.Name === self.user() && u.Pwd === self.pwd();
+            return u.Name.toLowerCase() === self.user().toLowerCase() && u.Pwd === self.pwd();
         });
         var valid = user? true: false;        
         self.userIsValid(valid);        
@@ -30,6 +33,7 @@ var ViewModel = function () {
     self.selectedText = ko.observable('Click a phrase');
     self.translation = ko.observable('');
     self.trsClick = function (item) {
+        setMessage(STATE_NO_MESSAGE);
         self.selected(item);
         self.selectedText(item.Text);
         $.post('api/block', "=" + item.TransId +"," + self.user()).done(function (result) {
@@ -39,6 +43,7 @@ var ViewModel = function () {
             $("table td[id=" + item.TransId + "]").toggleClass(rowStyle);
             $("#save").removeClass("btn-success").removeClass("disabled");
             $("#save").addClass(btnStyle);
+            if (result) setMessage(STATE_BLOCKED_BY, result);
         });
     };
     self.save = function () {
@@ -48,12 +53,8 @@ var ViewModel = function () {
         console.log(self.selected());
         $.post('api/translation', self.selected()).done(function () {
             self.selectedText("");
-            self.translation("");
-            // Remove selected from array
+            self.translation("");            
             self.trs($.grep(self.trs(), function (o) { return o.TransId !== self.selected().TransId }));
-            // Get max ID from the array
-            // Get value top 1 next id            
-            // add new translation to array
             var id = self.trs()[self.trs().length - 1].TransId;
             $.getJSON('api/translation/' + id, function (result) {
                 self.trs.push(result);
@@ -65,8 +66,15 @@ var ViewModel = function () {
         $("#save").addClass("btn-success");
     }
     self.user = ko.observable(null);
+    self.message = ko.observable('');
     //var trans = [{ "TransId": 1, "TransKey": "ABOUT_DATABASECREATEDBY", "Text": "Created By", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 2, "TransKey": "ABOUT_DATABASECREATIONDATE", "Text": "Creation Date", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 3, "TransKey": "ABOUT_DATABASECREATIONMACHINE", "Text": "Created on Machine", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 4, "TransKey": "ABOUT_DATABASEDESCRIPTION", "Text": "Description", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 5, "TransKey": "ABOUT_DATABASEDETAILS", "Text": "Database Details", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 6, "TransKey": "ABOUT_DATABASEID", "Text": "Identifier", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 7, "TransKey": "ABOUT_DATABASEMASTERDATABASEID", "Text": "Master Database Id", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 8, "TransKey": "ABOUT_DOWNLOAD", "Text": "Download Version Details", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 9, "TransKey": "ABOUT_DOWNLOADVERSIONINFORMATION", "Text": "Downloads a text file containing the version information", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 10, "TransKey": "ABOUT_MIT_LICENSING", "Text": "Where an MIT license is mentioned, this is a license of the form presented here:", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }];
     //viewModel.trs = trans;
+
+    function setMessage(state, value) {
+        if (state === STATE_NO_MESSAGE) self.message('');
+        if (state === STATE_BLOCKED_BY) self.message(STATE_BLOCKED_BY + ' ' + value);
+        $("table td[id=message]").toggleClass("warning");
+    }
 
 };
 

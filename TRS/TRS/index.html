@@ -10,7 +10,7 @@
     <script src="Scripts/bootstrap.js"></script>
     <script src="Scripts/trsApp.js"></script>
 </head>
-<body>    
+<body>
     <!-- ko if: !userIsValid() -->
     <div class="container" id="login">
         <div class="row">
@@ -45,6 +45,13 @@
                         </div>
                     </td>
                 </tr>
+                <!-- ko if: message -->
+            <tr>
+                <td class="warning" id="message">
+                    <span style="font-weight: bold" data-bind="text: message"></span>
+                </td>
+            </tr>
+                <!-- /ko -->
                 <!-- ko foreach: trs -->
                 <tr>
                     <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
