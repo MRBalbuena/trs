@@ -1,6 +1,15 @@
 ﻿11/02/2016
+2-Add welcome
+20161302 - OK - 2-Set focus to login when enter app
+20161302 - OK - 2-Set pwd type characters to pwd in login
+20161302 - OK - 1- WHen tick on row, remove text in input
+20161302 - OK - Set danger class to button when text is empty
+20161302 - OK - Update all 10 records when save rather than add one record because cas show already translated phrases.
+20161302 - OK - Let save blocked item when user is the same
+20161302 - OK - Cancel save when button is disabled
+20161302 - OK - Disable button when translation is empty
+20161102 - OK - Set warning color to message
+20161102 - OK - Unblock any phrase blocked for more than 10 minutes
 20161102 - OK - Compare user names in lower
 20161102 - OK - Display message who blocked phrase
-- - Cancel save when button is disabled
-- - Disable button when translation is empty
-- - Unblock any phrase blocked for more than 10 minutes
+20161102 - OK - New item added when translation is saved is duplicated

@@ -4,6 +4,8 @@
 
 var STATE_BLOCKED_BY = 'Phrase bloked by: ';
 var STATE_NO_MESSAGE = '';
+var STATE_TRANSLATION_EMPTY = 'Please set a translation.';
+var STATE_SAVE_ERROR = 'An error has ocurred trying to save. Please try again';
 
 var ViewModel = function () {
     var self = this;
@@ -26,6 +28,8 @@ var ViewModel = function () {
     self.getTrs = function () {
         return $.getJSON('api/translation', function (result) {
             self.trs(result);
+            self.selectedText("");
+            self.translation("");
         });
     };
     self.trs = ko.observableArray([]);
@@ -33,47 +37,58 @@ var ViewModel = function () {
     self.selectedText = ko.observable('Click a phrase');
     self.translation = ko.observable('');
     self.trsClick = function (item) {
+        self.translation('');
         setMessage(STATE_NO_MESSAGE);
         self.selected(item);
         self.selectedText(item.Text);
-        $.post('api/block', "=" + item.TransId +"," + self.user()).done(function (result) {
-            var rowStyle = result ? "danger" : "active";
-            var btnStyle = result ? "disabled" : "btn-default";
+        $.post('api/block', "=" + item.TransId + "," + self.user()).done(function (result) {
+            var rowStyle = "active";
+            var btnStyle = "btn-default";
+            $("#save").removeAttr("diabled");
+            self.disabled(false);
+            $("#save").removeClass("btn-success");
+            $("#save").removeClass("btn-danger");
             $("table td").removeClass();
-            $("table td[id=" + item.TransId + "]").toggleClass(rowStyle);
-            $("#save").removeClass("btn-success").removeClass("disabled");
+            if (result && result != self.user()) {
+                var rowStyle = "danger";
+                var btnStyle = "btn-danger";
+                setMessage(STATE_BLOCKED_BY, result);
+                $("#save").attr("diabled", "disabled");
+                self.disabled(true);
+            }
+            $("table td[id=" + item.TransId + "]").attr("class", rowStyle);
             $("#save").addClass(btnStyle);
-            if (result) setMessage(STATE_BLOCKED_BY, result);
         });
     };
     self.save = function () {
-        // TODO: MRB check input length and set error message if invalid.
+        if (self.disabled()) return;
+        if (!self.translation()) {
+            setMessage(STATE_TRANSLATION_EMPTY);
+            $("#save").addClass("btn-danger");
+            return;
+        }        
         self.selected().Spanish = self.translation();
         self.selected().TransBy = self.user();
         console.log(self.selected());
         $.post('api/translation', self.selected()).done(function () {
-            self.selectedText("");
-            self.translation("");            
-            self.trs($.grep(self.trs(), function (o) { return o.TransId !== self.selected().TransId }));
-            var id = self.trs()[self.trs().length - 1].TransId;
-            $.getJSON('api/translation/' + id, function (result) {
-                self.trs.push(result);
-            });
+            self.getTrs();
         }).fail(function (data) {
 
         });
-        $("#save").removeClass("btn-default");
+        $("#save").removeClass("btn-default").removeClass("btn-danger");
         $("#save").addClass("btn-success");
     }
     self.user = ko.observable(null);
     self.message = ko.observable('');
+    self.disabled = ko.observable(false);
     //var trans = [{ "TransId": 1, "TransKey": "ABOUT_DATABASECREATEDBY", "Text": "Created By", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 2, "TransKey": "ABOUT_DATABASECREATIONDATE", "Text": "Creation Date", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 3, "TransKey": "ABOUT_DATABASECREATIONMACHINE", "Text": "Created on Machine", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 4, "TransKey": "ABOUT_DATABASEDESCRIPTION", "Text": "Description", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 5, "TransKey": "ABOUT_DATABASEDETAILS", "Text": "Database Details", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 6, "TransKey": "ABOUT_DATABASEID", "Text": "Identifier", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 7, "TransKey": "ABOUT_DATABASEMASTERDATABASEID", "Text": "Master Database Id", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 8, "TransKey": "ABOUT_DOWNLOAD", "Text": "Download Version Details", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 9, "TransKey": "ABOUT_DOWNLOADVERSIONINFORMATION", "Text": "Downloads a text file containing the version information", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 10, "TransKey": "ABOUT_MIT_LICENSING", "Text": "Where an MIT license is mentioned, this is a license of the form presented here:", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }];
     //viewModel.trs = trans;
 
     function setMessage(state, value) {
         if (state === STATE_NO_MESSAGE) self.message('');
         if (state === STATE_BLOCKED_BY) self.message(STATE_BLOCKED_BY + ' ' + value);
-        $("table td[id=message]").toggleClass("warning");
+        if (state === STATE_TRANSLATION_EMPTY) self.message(STATE_TRANSLATION_EMPTY);
+        $("table td[id=message]").attr("class", "warning");
     }
 
 };
@@ -84,4 +99,5 @@ $(function () {
     ko.applyBindings(vm);    
     vm.getUsers();
     vm.getTrs();
+    $('#userName').focus();
 });

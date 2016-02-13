@@ -25,7 +25,7 @@ namespace TRS.Controllers
         
         public IEnumerable<Translation> Get()
         {
-            return _translations.GetTopToTranslate(100);
+            return _translations.GetTopToTranslate(10);
         }
 
         public Translation Get(int id)
@@ -53,7 +53,7 @@ namespace TRS.Controllers
         public IEnumerable<User> GetUsers()
         {
             var users = new List<User> {                 
-                new User { Name="Gabriela", Pwd = "GNG"},
+                new User { Name="Gabriela", Pwd = "GGA"},
                 new User { Name="Micaela", Pwd = "MBG"},
                 new User { Name="Valentina", Pwd = "VBG"},
                 new User { Name="Marcelo", Pwd = "MRB"}

@@ -17,7 +17,15 @@ namespace TRS.Service
 
         public IEnumerable<Translation> GetTopToTranslate(int top)
         {
-            return _repo.GetAll().Where(t => t.Spanish == null).OrderBy(t => t.TransId).ToList();
+            var translations = _repo.GetAll()                
+                .Where(t => t.Spanish == null)
+                .Take(10)
+                .OrderBy(t => t.TransId)                
+                .ToList();
+            translations.Where(t => t.BlockedTime < DateTime.Now.AddMinutes(-10)).ToList().ForEach(t => {
+                t.BlockedBy = string.Empty; t.BlockedTime = null;
+            }); 
+            return translations;
         }
 
         public Translation GetPhrase(int id)
@@ -29,6 +37,7 @@ namespace TRS.Service
         {
             var phrase = _repo.Get(id);
             if (!string.IsNullOrEmpty(phrase.BlockedBy)) return phrase.BlockedBy;
+            if (!string.IsNullOrEmpty(phrase.Spanish)) return phrase.TransBy;
             phrase.BlockedBy = user;
             phrase.BlockedTime = DateTime.Now;
             _repo.Update(phrase);

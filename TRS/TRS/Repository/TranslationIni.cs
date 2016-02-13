@@ -26,17 +26,49 @@ namespace TRS.Repository
                 new Translation { TransKey = "ABOUT_DATABASEID", Text = "Identifier"},
                 new Translation { TransKey = "ABOUT_DATABASEMASTERDATABASEID", Text = "Master Database Id"},
                 new Translation { TransKey = "ABOUT_DOWNLOAD", Text = "Download Version Details"},
-                new Translation
-                {
-                    
+                new Translation {                   
                     TransKey = "ABOUT_DOWNLOADVERSIONINFORMATION",
                     Text = "Downloads a text file containing the version information"
                 },
-                new Translation
-                {
-                    
+                new Translation{                    
                     TransKey = "ABOUT_MIT_LICENSING",
                     Text = "Where an MIT license is mentioned, this is a license of the form presented here:"
+                },
+                new Translation{
+                    TransKey = "ABOUT_PROXYINDICATOR",
+                    Text = "(configured as a Proxy Site)"
+                },
+                new Translation{
+                    TransKey = "ABOUT_THIRDPARTY",
+                    Text = "Third Party Licenses"
+                },
+                new Translation{
+                    TransKey = "ABOUT_WEBSITEVERSION",
+                    Text = "Website Version:"
+                },
+                new Translation{
+                    TransKey = "ABOUT_WORKSTATION",
+                    Text = "Current Workstation:"
+                },
+                new Translation{
+                    TransKey = "ACTIONS",
+                    Text = "Actions"
+                },
+                new Translation{
+                    TransKey = "ACTIONS_DESCRIPTIONS__",
+                    Text = "Represents the top level group for the actions in the system."
+                },
+                new Translation{
+                    TransKey = "ACTIONS_DESCRIPTIONS_APPROVALJOB_",
+                    Text = "Represents the group of actions applicable to Approval Requests in the Repository"
+                },
+                new Translation{
+                    TransKey = "ACTIONS_DESCRIPTIONS_APPROVALJOB_CONTRIBUTE_",
+                    Text = "Represents a group of actions applicable to user contributions into an Approval Requests/Job (e.g. attachments, votes)"
+                },
+                new Translation{
+                    TransKey = "ACTIONS_DESCRIPTIONS_APPROVALJOB_CONTRIBUTE_ADDCOMMENT",
+                    Text = "Occurs when a user adds a comment to an Approval Request"
                 },
             };
 
