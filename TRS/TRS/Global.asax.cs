@@ -20,7 +20,7 @@ namespace TRS
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Database.SetInitializer<TransDataContext>(new TranslationIni());
+            //Database.SetInitializer<TransDataContext>(new TranslationIni());
         }
     }
 }

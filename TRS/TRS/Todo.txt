@@ -1,4 +1,6 @@
 ﻿11/02/2016
+1-Add a list of already defined translated words.
+2-Add stats data: done: pending: percentage
 2-Add welcome
 20161302 - OK - 2-Set focus to login when enter app
 20161302 - OK - 2-Set pwd type characters to pwd in login
