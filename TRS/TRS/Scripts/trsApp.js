@@ -26,13 +26,17 @@ var ViewModel = function () {
     }
     self.userIsValid = ko.observable(false);
     self.getTrs = function () {
+        $.getJSON('api/translation/stats', function (result) {            
+            $('.progress-bar').attr('style', 'width: ' + result.TranslationsPercent.toFixed(2) + '%');
+            $('.progress-bar').attr('title', 'Phrases Translated: ' + result.Translated + ', (' + result.TranslationsPercent.toFixed(2) + '%)');
+        });
         return $.getJSON('api/translation', function (result) {
             self.trs(result);
             self.selectedText("");
             self.translation("");
-        });
+        });        
     };
-    self.trs = ko.observableArray([]);
+    self.trs = ko.observableArray([]);        
     self.selected = ko.observable(null);
     self.selectedText = ko.observable('Click a phrase');
     self.translation = ko.observable('');

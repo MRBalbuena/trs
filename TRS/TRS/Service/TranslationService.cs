@@ -33,6 +33,21 @@ namespace TRS.Service
             return _repo.Get(id);
         }
 
+        public Stats GetStats()
+        {
+            var tot = _repo.GetAll().Count();
+            double translated = _repo.GetAll().Count(t => !string.IsNullOrEmpty(t.Spanish));
+            double transChecked = _repo.GetAll().Count(t => !string.IsNullOrEmpty(t.CheckedBy));
+            return new Stats()
+            {
+                Checked = Convert.ToInt32(transChecked),
+                TotalTranslations = tot,
+                Translated = Convert.ToInt32(translated),
+                CheckedPercent = (transChecked/tot)*100,
+                TranslationsPercent = (translated/tot)*100
+            };            
+        }
+
         public string BlockPhrase(int id, string user)
         {
             var phrase = _repo.Get(id);

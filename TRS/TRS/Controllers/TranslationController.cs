@@ -61,11 +61,11 @@ namespace TRS.Controllers
             return users;
         }
 
-        [HttpPost] 
-        [Route("api/translation/validate")]      
-        public bool Validate(User user)
+        [HttpGet] 
+        [Route("api/translation/stats")]      
+        public Stats Validate(User user)
         {
-            return true;
+            return _translations.GetStats();
         }
     }
 }
