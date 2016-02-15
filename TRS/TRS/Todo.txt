@@ -1,5 +1,6 @@
 ﻿11/02/2016
 1-Add a "next button" to get next 10 phrases 
+1-Add a search button to find phrases already translated using specific world or phrase
 1-Add a list of already defined translated words.
 2-Add welcome
 20161402 - OK - 2-Add stats data: done: pending: percentage
