@@ -1,4 +1,5 @@
 ﻿11/02/2016
+1-
 1-Add a "next button" to get next 10 phrases 
 1-Add a list of already defined translated words.
 2-Add welcome
