@@ -49,6 +49,13 @@ namespace TRS.Controllers
             _translations.SaveTranslation(translation);
         }
 
+        [HttpGet]
+        [Route("api/translation/searchByWords")]
+        public IEnumerable<Translation> GetSearchByWords(string words)
+        {
+            return _translations.SearchByWord(words);
+        }
+
         [Route("api/users")]
         public IEnumerable<User> GetUsers()
         {
@@ -63,7 +70,7 @@ namespace TRS.Controllers
 
         [HttpGet] 
         [Route("api/translation/stats")]      
-        public Stats Validate(User user)
+        public Stats GetStats(User user)
         {
             return _translations.GetStats();
         }

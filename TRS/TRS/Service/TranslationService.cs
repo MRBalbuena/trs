@@ -74,5 +74,12 @@ namespace TRS.Service
             _repo.Update(phrase);
             _repo.SaveChanges();
         }
+
+        public IEnumerable<Translation> SearchByWord(string words)
+        {
+            var Translations =
+                _repo.GetAll().Where(t => t.Text.ToLower().Contains(words.ToLower()) && !string.IsNullOrEmpty(t.Spanish)).ToList();
+            return Translations;
+        }
     }
 }

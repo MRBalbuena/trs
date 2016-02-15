@@ -70,18 +70,44 @@
             </tbody>
         </table>
         <div class="row">
-            <div class="col-lg-3"></div>
-            <div class="col-lg-3"></div>
             <div class="col-lg-6">
-                <input type="text" class="form-control" placeholder="Search for translations for..." />
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Go!</button>
-                </span>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchByWords" placeholder="Search for translations for..." data-bind="value: wordFilter"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" data-bind="click: getSearch()">Go!</button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
     <!-- /ko -->
-    <!-- ko if: displaySearch -->
+    <!-- ko if: displaySearchResult -->
+    <div class="container">
+        <div class="panel panel-info">
+            <table class="table table-condensed">
+                <tbody>
+                    <!-- ko foreach: searchResult -->
+                <tr>
+                    <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
+                        <div class="trs-container" style="width: 100%">
+                            <span data-bind="text: Text"></span>
+                        </div>
+                    </td>
+                </tr>
+                    <tr>
+                        <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
+                            <div class="trs-container"  style="width: 100%">
+                                <span data-bind="text: Spanish" style="font-style: italic; font-weight: bold"></span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- /ko -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
     |<!-- /ko -->
 </body>
 </html>
