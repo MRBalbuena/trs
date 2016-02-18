@@ -89,8 +89,7 @@ var ViewModel = function () {
     self.displaySearchResult = ko.observable(false);
     self.wordFilter = ko.observable('');
     self.getSearch = function () {
-        if(self.wordFilter())
-        //if($('#searchByWords').val())
+        if(self.wordFilter())        
         {
             $.getJSON('api/translation/searchByWords', 'words=' + self.wordFilter(), function (result) {
                 self.searchResult(result);

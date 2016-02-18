@@ -20,7 +20,7 @@
                         <h4>Welcome back.</h4>
                         <input type="text" data-bind="value: user" id="userName" class="form-control input-sm chat-input" placeholder="username" />
                         <br>
-                        <input type="password" data-bind="value: pwd" id="userPassword" class="form-control input-sm chat-input" placeholder="password"  />
+                        <input type="password" data-bind="value: pwd" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
                         <br>
                         <div class="wrapper">
                             <span class="group-btn">
@@ -34,42 +34,80 @@
         </form>
     </div>
     <!-- /ko -->
-<!-- ko if: userIsValid-->
-<div class="container" id="trs">
-    <div class="progress">
-        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">            
+    <!-- ko if: userIsValid-->
+    <div class="container" id="trs">
+        <div class="progress">
+            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+            </div>
         </div>
-    </div>    
-    <table class="table table-condensed">
-        <tbody>
-        <tr>
-            <td>
-                <div class="form-group">
-                    <span>Translate: </span><label for="spanish" data-bind="text: selectedText"></label>
-                    <input id="spanish" type="text" class="form-control" data-bind="value: translation"/>
-                    <button type="button" id="save" data-bind="click: save" class="btn btn-default btn-block">Save</button>
+        <table class="table table-condensed">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span>Translate: </span><label for="spanish" data-bind="text: selectedText"></label>
+                            <input id="spanish" type="text" class="form-control" data-bind="value: translation" />
+                            <button type="button" id="save" data-bind="click: save" class="btn btn-default btn-block">Save</button>
+                        </div>
+                    </td>
+                </tr>
+                <!-- ko if: message -->
+                <tr>
+                    <td class="warning" id="message">
+                        <span style="font-weight: bold" data-bind="text: message"></span>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                <!-- ko foreach: trs -->
+                <tr>
+                    <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
+                        <div class="trs-container" data-bind="click: $root.trsClick" style="width: 100%">
+                            <span data-bind="text: Text"></span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- /ko -->
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchByWords" placeholder="Search for translations for..." data-bind="value: wordFilter"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" data-bind="click: getSearch()">Go!</button>
+                    </span>
                 </div>
-            </td>
-        </tr>
-        <!-- ko if: message -->
-        <tr>
-            <td class="warning" id="message">
-                <span style="font-weight: bold" data-bind="text: message"></span>
-            </td>
-        </tr>
-        <!-- /ko -->
-        <!-- ko foreach: trs -->
-        <tr>
-            <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
-                <div class="trs-container" data-bind="click: $root.trsClick" style="width: 100%">
-                    <span data-bind="text: Text"></span>
-                </div>
-            </td>
-        </tr>
-        <!-- /ko -->
-        </tbody>
-    </table>
-</div>
+            </div>
+        </div>
+    </div>
     <!-- /ko -->
+    <!-- ko if: displaySearchResult -->
+    <div class="container">
+        <div class="panel panel-info">
+            <table class="table table-condensed">
+                <tbody>
+                    <!-- ko foreach: searchResult -->
+                <tr>
+                    <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
+                        <div class="trs-container" style="width: 100%">
+                            <span data-bind="text: Text"></span>
+                        </div>
+                    </td>
+                </tr>
+                    <tr>
+                        <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
+                            <div class="trs-container"  style="width: 100%">
+                                <span data-bind="text: Spanish" style="font-style: italic; font-weight: bold"></span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- /ko -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    |<!-- /ko -->
 </body>
 </html>
