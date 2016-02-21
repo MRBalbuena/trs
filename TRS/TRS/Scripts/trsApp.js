@@ -1,5 +1,6 @@
 ﻿/// <reference path="knockout-3.4.0.debug.js" />
 /// <reference path="jquery-1.10.2.js" />
+/// <reference path="jquery-ui-1.11.4.js" />
 /// <reference path="knockout-3.4.0.js" />
 
 var STATE_BLOCKED_BY = 'Phrase bloked by: ';
@@ -27,8 +28,10 @@ var ViewModel = function () {
     self.userIsValid = ko.observable(false);
     self.getTrs = function () {
         $.getJSON('api/translation/stats', function (result) {
-            $('.progress-bar').attr('style', 'width: ' + result.TranslationsPercent.toFixed(2) + '%');
-            $('.progress-bar').attr('title', 'Phrases Translated: ' + result.Translated + ', (' + result.TranslationsPercent.toFixed(2) + '%)');
+            $('.progress-bar-info').attr('style', 'width: ' + result.TranslationsPercent.toFixed(2) + '%');
+            $('.progress-bar-info').attr('title', 'Phrases Translated: ' + result.Translated + ', (' + result.TranslationsPercent.toFixed(2) + '%)');
+            $('.progress-bar-success').attr('style', 'width: ' + result.CheckedPercent.toFixed(2) + '%');
+            $('.progress-bar-success').attr('title', 'Phrases Checked: ' + result.Checked + ', (' + result.CheckedPercent.toFixed(2) + '%)');
         });
         return $.getJSON('api/translation', function (result) {
             self.trs(result);
@@ -99,9 +102,33 @@ var ViewModel = function () {
             self.searchResult(null);
             self.displaySearchResult(false);
         }
+    };
+    self.check = function () {
+        var data = this;
+        $('#dialog-check')
+        .data('data', 'data')
+        .dialog({
+            resizable: false,
+            height: 200,
+            width: 400,
+            modal: true,
+            buttons: {
+                'Confirm': function () {
+                    data.CheckedBy = self.user();
+                    data.CheckedTime = new Date().getTime();
+                    $.post('api/translation', data).done(function () {
+                        $('#tr_' + data.TransId).addClass('success');
+                    }).fail(function (data) {
+
+                    });
+                    $(this).dialog('close');
+                },
+                Cancel: function() {
+                    $(this).dialog('close');
+                }
+            }
+        });
     };    
-    //var trans = [{ "TransId": 1, "TransKey": "ABOUT_DATABASECREATEDBY", "Text": "Created By", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 2, "TransKey": "ABOUT_DATABASECREATIONDATE", "Text": "Creation Date", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 3, "TransKey": "ABOUT_DATABASECREATIONMACHINE", "Text": "Created on Machine", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 4, "TransKey": "ABOUT_DATABASEDESCRIPTION", "Text": "Description", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 5, "TransKey": "ABOUT_DATABASEDETAILS", "Text": "Database Details", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 6, "TransKey": "ABOUT_DATABASEID", "Text": "Identifier", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 7, "TransKey": "ABOUT_DATABASEMASTERDATABASEID", "Text": "Master Database Id", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 8, "TransKey": "ABOUT_DOWNLOAD", "Text": "Download Version Details", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 9, "TransKey": "ABOUT_DOWNLOADVERSIONINFORMATION", "Text": "Downloads a text file containing the version information", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }, { "TransId": 10, "TransKey": "ABOUT_MIT_LICENSING", "Text": "Where an MIT license is mentioned, this is a license of the form presented here:", "Spanish": null, "BlockedBy": null, "BlockedTime": null, "TransBy": null, "TransDate": null, "CheckedBy": null, "CheckedTime": null, "RejectedBy": null, "RejectedTime": null }];
-    //viewModel.trs = trans;
 
     function setMessage(state, value) {
         if (state === STATE_NO_MESSAGE) self.message('');

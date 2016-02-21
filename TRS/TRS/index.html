@@ -4,9 +4,10 @@
     <title></title>
     <meta charset="utf-8" />
     <link href="Content/bootstrap.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="Scripts/knockout-3.4.0.js"></script>
     <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="Scripts/jquery-ui-1.11.4.js"></script>
     <script src="Scripts/bootstrap.js"></script>
     <script src="Scripts/trsApp.js"></script>
 </head>
@@ -15,7 +16,7 @@
     <div class="container" id="login">
         <form id="login">
             <div class="row">
-                <div class="col-md-offset-5 col-md-3">
+                <div class="col-md-offset-3 col-md-3">
                     <div class="form-login">
                         <h4>Welcome back.</h4>
                         <input type="text" data-bind="value: user" id="userName" class="form-control input-sm chat-input" placeholder="username" />
@@ -40,7 +41,11 @@
             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
             </div>
         </div>
-        <table class="table table-condensed">
+        <div class="progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+            </div>
+        </div>
+        <table class="table table-condensed table-hover">
             <tbody>
                 <tr>
                     <td>
@@ -72,7 +77,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="searchByWords" placeholder="Search for translations for..." data-bind="value: wordFilter"/>
+                    <input type="text" class="form-control" id="searchByWords" placeholder="Search for translations for..." data-bind="value: wordFilter" />
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button" data-bind="click: getSearch()">Go!</button>
                     </span>
@@ -82,32 +87,49 @@
     </div>
     <!-- /ko -->
     <!-- ko if: displaySearchResult -->
-    <div class="container">
-        <div class="panel panel-info">
-            <table class="table table-condensed">
-                <tbody>
-                    <!-- ko foreach: searchResult -->
-                <tr>
-                    <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
-                        <div class="trs-container" style="width: 100%">
-                            <span data-bind="text: Text"></span>
+<div class="container">
+    <div class="panel panel-info">
+        <table class="table table-condensed table-hover">
+            <tbody>
+            <!-- ko foreach: searchResult -->
+            <tr>
+                <td data-bind="attr: { id: TransId} " class="active" style="cursor: pointer; width: 100%; font-size: medium;">
+                    <div class="trs-container" style="width: 100%">
+                        <span data-bind="text: Text"></span>
+                    </div>
+                </td>
+            </tr>
+            <tr data-bind="css: { success: CheckedBy !== null }, attr: {id: 'tr_' + TransId}" >
+                <td style="cursor: pointer; width: 100%">
+                    <div class="row" style="width: 100%">
+                        <div class="col-md-10">
+                            <span data-bind="text: Spanish" style="font-style: italic; font-weight: bold"></span>
                         </div>
-                    </td>
-                </tr>
-                    <tr>
-                        <td data-bind="attr: { id: TransId} " class="" style="cursor: pointer; width: 100%">
-                            <div class="trs-container"  style="width: 100%">
-                                <span data-bind="text: Spanish + ' (' + TransBy + ')'" style="font-style: italic; font-weight: bold"></span>
-                            </div>
-                        </td>
-                    </tr>
+                        <div class="col-md-1">
+                            <span data-bind="text: '(' + TransBy + ')'" style="font-style: italic; font-weight: bold"></span>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-default" aria-label="Left Align">
+                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                            </button>
 
-                    <!-- /ko -->
-                </tbody>
-            </table>
-        </div>
+                            <button type="button" class="btn btn-default" aria-label="Left Align" data-bind="click: $root.check, visible: CheckedBy == null">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
 
+            <!-- /ko -->
+            </tbody>
+        </table>
     </div>
-    |<!-- /ko -->
+</div>
+    <div id="dialog-check" title="Check Translation">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This Translation is going to be set as checked by you. Are you sure?</p>
+    </div>
+|<!-- /ko -->
+
 </body>
 </html>
