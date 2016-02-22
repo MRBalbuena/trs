@@ -57,8 +57,8 @@ var ViewModel = function () {
             $("#save").removeClass("btn-danger");
             $("table td").removeClass();
             if (result && result != self.user()) {
-                var rowStyle = "danger";
-                var btnStyle = "btn-danger";
+                rowStyle = "danger";
+                btnStyle = "btn-danger";
                 setMessage(STATE_BLOCKED_BY, result);
                 $("#save").attr("diabled", "disabled");
                 self.disabled(true);
@@ -76,7 +76,8 @@ var ViewModel = function () {
         }
         self.selected().Spanish = self.translation();
         self.selected().TransBy = self.user();
-        console.log(self.selected());
+        self.selected().CheckedBy = null;
+        //console.log(self.selected());
         $.post('api/translation', self.selected()).done(function () {
             self.getTrs();
         }).fail(function (data) {
@@ -128,7 +129,21 @@ var ViewModel = function () {
                 }
             }
         });
-    };    
+    };
+    self.edit = function() {
+        var item = this;
+        item.CheckedBy = null;
+        self.selected(item);
+        self.selectedText(item.Text);
+        self.translation(item.Spanish);
+        self.disabled(false);
+    };
+    self.getUnchecked = function() {
+        $.getJSON('api/translation/unchecked', function (result) {
+            self.searchResult(result);
+            self.displaySearchResult(true);
+        });
+    };
 
     function setMessage(state, value) {
         if (state === STATE_NO_MESSAGE) self.message('');

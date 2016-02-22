@@ -56,6 +56,13 @@ namespace TRS.Controllers
             return _translations.SearchByWord(words);
         }
 
+        [HttpGet]
+        [Route("api/translation/unchecked")]
+        public IEnumerable<Translation> GetUnchecked()
+        {
+            return _translations.GetUnchecked();
+        }
+
         [Route("api/users")]
         public IEnumerable<User> GetUsers()
         {

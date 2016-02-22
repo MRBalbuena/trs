@@ -88,5 +88,12 @@ namespace TRS.Service
                 .ToList();
             return Translations;
         }
+
+        public IEnumerable<Translation> GetUnchecked()
+        {
+            return _repo.GetAll()
+                .Where(t => String.IsNullOrEmpty(t.CheckedBy))
+                .Take(20);
+        }    
     }
 }
