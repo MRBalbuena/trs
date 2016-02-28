@@ -24,8 +24,8 @@ namespace TRS.Models
         public DateTime? TransDate { get; set; }
         public string CheckedBy { get; set; }
         public DateTime? CheckedTime { get; set; }
-        public string RejectedBy { get; set; }
-        public DateTime? RejectedTime { get; set; }
+        public string EditedBy { get; set; }
+        public DateTime? EditedTime { get; set; }
         [StringLength(1000)]
         public string Comment { get; set; }
     }

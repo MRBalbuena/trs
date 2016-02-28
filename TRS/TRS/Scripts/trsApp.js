@@ -75,11 +75,13 @@ var ViewModel = function () {
             return;
         }
         self.selected().Spanish = self.translation();
-        self.selected().TransBy = self.user();
+        if (!self.edition) self.selected().TransBy = self.user();
+        if (self.edition) self.selected().EditedBy = self.user();
         self.selected().CheckedBy = null;
         //console.log(self.selected());
         $.post('api/translation', self.selected()).done(function () {
             self.getTrs();
+            self.edition = false;
         }).fail(function (data) {
 
         });
@@ -137,7 +139,9 @@ var ViewModel = function () {
         self.selectedText(item.Text);
         self.translation(item.Spanish);
         self.disabled(false);
+        self.edition = true;
     };
+    self.edition = ko.observable(false);
     self.getUnchecked = function() {
         $.getJSON('api/translation/unchecked', function (result) {
             self.searchResult(result);

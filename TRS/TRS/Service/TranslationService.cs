@@ -72,8 +72,8 @@ namespace TRS.Service
                 phrase.BlockedTime = null;
                 phrase.CheckedBy = translation.CheckedBy;
                 if(translation.CheckedBy != null) phrase.CheckedTime = DateTime.Now;
-                phrase.RejectedBy = translation.RejectedBy;
-                if(translation.RejectedBy != null) phrase.RejectedTime = DateTime.Now;
+                phrase.EditedBy = translation.EditedBy;
+                if(translation.EditedBy != null) phrase.EditedTime = DateTime.Now;
                 phrase.Comment = translation.Comment;
             }
             _repo.Update(phrase);
