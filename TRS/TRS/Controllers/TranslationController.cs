@@ -21,11 +21,17 @@ namespace TRS.Controllers
             _translations = new TranslationService();
         }
 
-        // GET: Translation
-        
+        // GET: Translation        
         public IEnumerable<Translation> Get()
         {
             return _translations.GetTopToTranslate(10);
+        }
+
+        [HttpGet]
+        [Route("api/translation/getMore")]
+        public IEnumerable<Translation> GetMore()
+        {
+            return _translations.GetTopToTranslate(30);
         }
 
         public Translation Get(int id)

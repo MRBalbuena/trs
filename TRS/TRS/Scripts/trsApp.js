@@ -26,14 +26,16 @@ var ViewModel = function () {
         self.userIsValid(valid);
     }
     self.userIsValid = ko.observable(false);
-    self.getTrs = function () {
+    self.getTrs = function (getDefault) {
         $.getJSON('api/translation/stats', function (result) {
             $('.progress-bar-info').attr('style', 'width: ' + result.TranslationsPercent.toFixed(2) + '%');
             $('.progress-bar-info').attr('title', 'Phrases Translated: ' + result.Translated + ', (' + result.TranslationsPercent.toFixed(2) + '%)');
             $('.progress-bar-success').attr('style', 'width: ' + result.CheckedPercent.toFixed(2) + '%');
             $('.progress-bar-success').attr('title', 'Phrases Checked: ' + result.Checked + ', (' + result.CheckedPercent.toFixed(2) + '%)');
         });
-        return $.getJSON('api/translation', function (result) {
+        //var url = (typeof rows == 'undefined') ? 'api/translation/0' : 'api/translation/' + rows;
+        var url = getDefault ? 'api/translation' : 'api/translation/getMore';
+        return $.getJSON(url, function (result) {
             self.trs(result);
             self.selectedText("");
             self.translation("");
@@ -67,6 +69,18 @@ var ViewModel = function () {
             $("#save").addClass(btnStyle);
         });
     };
+    self.setSameText = function() {
+        self.translation(self.selected().Text);
+    }
+    self.getMore = function () {
+        self.rows = 30;
+        self.getTrs(false);
+    }
+    self.getLess = function () {
+        self.rows = 10;
+        self.getTrs(true);
+    }
+    self.rows = 10;
     self.save = function () {
         if (self.disabled()) return;
         if (!self.translation()) {
@@ -80,7 +94,8 @@ var ViewModel = function () {
         self.selected().CheckedBy = null;
         //console.log(self.selected());
         $.post('api/translation', self.selected()).done(function () {
-            self.getTrs();
+            var getDefault = (self.rows === 10) ? true : false;
+            self.getTrs(getDefault);
             self.edition = false;
         }).fail(function (data) {
 
@@ -163,6 +178,6 @@ $(function () {
     var vm = new ViewModel();
     ko.applyBindings(vm);
     vm.getUsers();
-    vm.getTrs();
+    vm.getTrs(true);
     $('#userName').focus();
 });

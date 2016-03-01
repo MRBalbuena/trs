@@ -19,7 +19,7 @@ namespace TRS.Service
         {
             var translations = _repo.GetAll()                
                 .Where(t => t.Spanish == null)
-                .Take(10)
+                .Take(top)
                 .OrderBy(t => t.TransId)                
                 .ToList();
             translations.Where(t => t.BlockedTime < DateTime.Now.AddMinutes(-10)).ToList().ForEach(t => {
