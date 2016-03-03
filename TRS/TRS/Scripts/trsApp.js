@@ -27,16 +27,15 @@ var ViewModel = function () {
         self.userIsValid(valid);
     }
     self.userIsValid = ko.observable(false);
-    self.getTrs = function (getDefault) {
-        
+    self.getTrs = function (getDefault) {        
         //var url = (typeof rows == 'undefined') ? 'api/translation/0' : 'api/translation/' + rows;
         var url = getDefault ? 'api/translation' : 'api/translation/getMore';
         return $.getJSON(url, function (result) {
             self.trs(result);
             self.selectedText("");
             self.translation("");
-        });
-        self.getStats();
+            self.getStats();
+        });        
     };
     self.getStats = function() {
         $.getJSON('api/translation/stats', function (result) {
