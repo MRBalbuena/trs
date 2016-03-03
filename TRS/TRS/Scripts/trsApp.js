@@ -23,16 +23,12 @@ var ViewModel = function () {
             return u.Name.toLowerCase() === self.user().toLowerCase() && u.Pwd === self.pwd();
         });
         var valid = user ? true : false;
+        if (valid) self.getTrs(true);
         self.userIsValid(valid);
     }
     self.userIsValid = ko.observable(false);
     self.getTrs = function (getDefault) {
-        $.getJSON('api/translation/stats', function (result) {
-            $('.progress-bar-info').attr('style', 'width: ' + result.TranslationsPercent.toFixed(2) + '%');
-            $('.progress-bar-info').attr('title', 'Phrases Translated: ' + result.Translated + ', (' + result.TranslationsPercent.toFixed(2) + '%)');
-            $('.progress-bar-success').attr('style', 'width: ' + result.CheckedPercent.toFixed(2) + '%');
-            $('.progress-bar-success').attr('title', 'Phrases Checked: ' + result.Checked + ', (' + result.CheckedPercent.toFixed(2) + '%)');
-        });
+        
         //var url = (typeof rows == 'undefined') ? 'api/translation/0' : 'api/translation/' + rows;
         var url = getDefault ? 'api/translation' : 'api/translation/getMore';
         return $.getJSON(url, function (result) {
@@ -40,7 +36,16 @@ var ViewModel = function () {
             self.selectedText("");
             self.translation("");
         });
+        self.getStats();
     };
+    self.getStats = function() {
+        $.getJSON('api/translation/stats', function (result) {
+            $('.progress-bar-info').attr('style', 'width: ' + result.TranslationsPercent.toFixed(2) + '%');
+            $('.progress-bar-info').attr('title', 'Phrases Translated: ' + result.Translated + ', (' + result.TranslationsPercent.toFixed(2) + '%)');
+            $('.progress-bar-success').attr('style', 'width: ' + result.CheckedPercent.toFixed(2) + '%');
+            $('.progress-bar-success').attr('title', 'Phrases Checked: ' + result.Checked + ', (' + result.CheckedPercent.toFixed(2) + '%)');
+        });
+    }
     self.trs = ko.observableArray([]);
     self.selected = ko.observable(null);
     self.selectedText = ko.observable('Click a phrase');
@@ -136,6 +141,7 @@ var ViewModel = function () {
                     data.CheckedTime = new Date().getTime();
                     $.post('api/translation', data).done(function () {
                         $('#tr_' + data.TransId).addClass('success');
+                        self.getStats();
                     }).fail(function (data) {
 
                     });
@@ -143,6 +149,7 @@ var ViewModel = function () {
                 },
                 Cancel: function() {
                     $(this).dialog('close');
+
                 }
             }
         });
@@ -177,7 +184,6 @@ var ViewModel = function () {
 $(function () {
     var vm = new ViewModel();
     ko.applyBindings(vm);
-    vm.getUsers();
-    vm.getTrs(true);
+    vm.getUsers();    
     $('#userName').focus();
 });
