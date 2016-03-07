@@ -93,14 +93,14 @@ var ViewModel = function () {
             return;
         }
         self.selected().Spanish = self.translation();
-        if (!self.edition) self.selected().TransBy = self.user();
-        if (self.edition) self.selected().EditedBy = self.user();
+        if (!self.edition()) self.selected().TransBy = self.user();
+        if (self.edition()) self.selected().EditedBy = self.user();
         self.selected().CheckedBy = null;
         //console.log(self.selected());
         $.post('api/translation', self.selected()).done(function () {
             var getDefault = (self.rows === 10) ? true : false;
             self.getTrs(getDefault);
-            self.edition = false;
+            self.edition(false);
         }).fail(function (data) {
 
         });
@@ -160,7 +160,7 @@ var ViewModel = function () {
         self.selectedText(item.Text);
         self.translation(item.Spanish);
         self.disabled(false);
-        self.edition = true;
+        self.edition(true);
     };
     self.edition = ko.observable(false);
     self.getUnchecked = function() {
