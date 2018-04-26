@@ -28,5 +28,6 @@ namespace TRS.Models
         public DateTime? EditedTime { get; set; }
         [StringLength(1000)]
         public string Comment { get; set; }
+        public string Edition { get; set; }
     }
 }

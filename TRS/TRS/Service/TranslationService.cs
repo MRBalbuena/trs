@@ -18,7 +18,7 @@ namespace TRS.Service
         public IEnumerable<Translation> GetTopToTranslate(int top)
         {
             var translations = _repo.GetAll()                
-                .Where(t => t.Spanish == null)
+                .Where(t => t.Spanish == null && t.Edition == "2018-05")
                 .Take(top)
                 .OrderBy(t => t.TransId)                
                 .ToList();
@@ -35,7 +35,7 @@ namespace TRS.Service
 
         public Stats GetStats()
         {
-            var tot = _repo.GetAll().Count();
+            var tot = _repo.GetAll().Where(t=> t.Edition == "2018-05").Count();
             double translated = _repo.GetAll().Count(t => !string.IsNullOrEmpty(t.Spanish));
             double transChecked = _repo.GetAll().Count(t => !string.IsNullOrEmpty(t.CheckedBy));
             return new Stats()
