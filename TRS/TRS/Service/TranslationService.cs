@@ -18,7 +18,7 @@ namespace TRS.Service
         public IEnumerable<Translation> GetTopToTranslate(int top)
         {
             var translations = _repo.GetAll()                
-                .Where(t => t.Spanish == null && t.Edition == "2018-05")
+                .Where(t => t.Spanish == null && t.Edition == "2018-11")
                 .Take(top)
                 .OrderBy(t => t.TransId)                
                 .ToList();
@@ -35,9 +35,9 @@ namespace TRS.Service
 
         public Stats GetStats()
         {
-            var tot = _repo.GetAll().Where(t=> t.Edition == "2018-05").Count();
-            double translated = _repo.GetAll().Count(t => !string.IsNullOrEmpty(t.Spanish));
-            double transChecked = _repo.GetAll().Count(t => !string.IsNullOrEmpty(t.CheckedBy));
+            var tot = _repo.GetAll().Where(t=> t.Edition == "2018-11").Count();
+            double translated = _repo.GetAll().Where(t => t.Edition == "2018-11").Count(t => !string.IsNullOrEmpty(t.Spanish));
+            double transChecked = _repo.GetAll().Where(t => t.Edition == "2018-11").Count(t => !string.IsNullOrEmpty(t.CheckedBy));
             return new Stats()
             {
                 Checked = Convert.ToInt32(transChecked),
@@ -92,7 +92,7 @@ namespace TRS.Service
         public IEnumerable<Translation> GetUnchecked()
         {
             return _repo.GetAll()
-                .Where(t => String.IsNullOrEmpty(t.CheckedBy))
+                .Where(t => String.IsNullOrEmpty(t.CheckedBy) && t.Edition == "2018-11")
                 .Take(20);
         }    
     }

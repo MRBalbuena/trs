@@ -39,10 +39,12 @@ var ViewModel = function () {
     };
     self.getStats = function() {
         $.getJSON('api/translation/stats', function (result) {
-            $('.progress-bar-info').attr('style', 'width: ' + result.TranslationsPercent.toFixed(2) + '%');
-            $('.progress-bar-info').attr('title', 'Phrases Translated: ' + result.Translated + ', (' + result.TranslationsPercent.toFixed(2) + '%)');
-            $('.progress-bar-success').attr('style', 'width: ' + result.CheckedPercent.toFixed(2) + '%');
-            $('.progress-bar-success').attr('title', 'Phrases Checked: ' + result.Checked + ', (' + result.CheckedPercent.toFixed(2) + '%)');
+            if (!isNaN(result.TranslationsPercent)) {
+                $('.progress-bar-info').attr('style', 'width: ' + result.TranslationsPercent.toFixed(2) + '%');
+                $('.progress-bar-info').attr('title', 'Phrases Translated: ' + result.Translated + ', (' + result.TranslationsPercent.toFixed(2) + '%)');
+                $('.progress-bar-success').attr('style', 'width: ' + result.CheckedPercent.toFixed(2) + '%');
+                $('.progress-bar-success').attr('title', 'Phrases Checked: ' + result.Checked + ', (' + result.CheckedPercent.toFixed(2) + '%)');
+            }
         });
     }
     self.trs = ko.observableArray([]);
